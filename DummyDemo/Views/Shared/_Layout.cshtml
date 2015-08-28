@@ -5,15 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - Dummy demo for ConektaClient</title>
     @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/jquery")
+    @RenderSection("header_section",false)
 </head>
 <body>
     <div class="container">
-        <hr />
+        <hr/>
         @RenderBody()
-        <hr />
+        <hr/>
         <footer>
             <p>&copy; @DateTime.Now.Year - Dummy demo for ConektaClient.</p>
         </footer>
     </div>
+    @RenderSection("footer_section", false)
 </body>
 </html>

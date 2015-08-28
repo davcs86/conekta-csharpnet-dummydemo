@@ -1,0 +1,69 @@
+﻿@using System.Diagnostics
+@using ConektaCSharp
+@model ConektaClientDummyDemo.Models.ChargeDemo
+@{
+    ViewBag.Title = "Charge demo";
+}
+
+<h2>Charge demo</h2>
+@using (Html.BeginForm("ChargeDemo", "Home", FormMethod.Post, new { Id = "chargeForm" }))
+{
+    <div class="form-group">
+        @Html.LabelFor(m => m.card_number)
+        @Html.TextBoxFor(m => m.card_number, new { @class = "form-control", Id = "cardNumber" })
+    </div>
+    @Html.HiddenFor(m => m.card_token, new { Id = "cardToken" })
+    <button id="tokenizeCardNumber" class="btn btn-primary">Process payment</button>
+}
+@{
+    if (ViewBag.Result != null)
+    {
+        <br/>
+        <pre>
+@Html.Raw(ViewBag.Result)
+        </pre>
+    }   
+}
+    
+@section header_section
+{
+    <script type="text/javascript" src="https://conektaapi.s3.amazonaws.com/v0.3.2/js/conekta.js"></script>
+    <script>
+        Conekta.setPublishableKey("key_BpSaezvoKy9vtjHtsFpVLBg");
+        jQuery(function ($) {
+            var tokenParams;
+            
+            /* After getting a successful token response, send it to the server */
+            var successResponseHandler = function (token) {
+                // set token
+                $("#cardToken").val(token);
+                $("#tokenizeCardNumber").prop("disabled", false);
+                // go to server-side
+                $("#chargeForm").trigger("submit");
+            };
+
+            /* After receiving and error response */
+            var errorResponseHandler = function (error) {
+                $("#tokenizeCardNumber").prop("disabled", false);
+                return alert(error.message);
+            };
+
+            $("body").on("click", "#tokenizeCardNumber", function(ev) {
+                ev.preventDefault();
+                $(this).prop("disabled", "disabled");
+                /* Tokenize card in conekta */
+                tokenParams = {
+                    "card": {
+                        "name": "Javier Pedreiro",
+                        "exp_year": "2014",
+                        "exp_month": "12",
+                        "cvc": "123"
+                    }
+                };
+                tokenParams["number"] = $("#cardNumber").val();
+                Conekta.token.create(tokenParams, successResponseHandler, errorResponseHandler);
+            });
+        });
+    </script>
+}
+
