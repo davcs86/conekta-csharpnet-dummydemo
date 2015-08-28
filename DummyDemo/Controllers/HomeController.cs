@@ -13,7 +13,7 @@ namespace ConektaClientDummyDemo.Controllers
     {
         public ActionResult Index()
         {
-            Conekta.ApiKey = "key_NR49sJT9k4zCNip4RhRShg";
+            Conekta.ApiKey = "[YOUR_PRIVATE_KEY]";
 
             JObject valid_payment_method = JObject.Parse("{'description':'Stogies'," +
                                                          "'reference_id':'9839-wolf_pack'," +
@@ -40,7 +40,7 @@ namespace ConektaClientDummyDemo.Controllers
         [HttpPost]
         public ActionResult ChargeDemo(ChargeDemo model)
         {
-            Conekta.ApiKey = "key_NR49sJT9k4zCNip4RhRShg";
+            Conekta.ApiKey = "[YOUR_PRIVATE_KEY]";
             JObject valid_payment_method = JObject.Parse("{'description':'Stogies'," +
                                                          "'reference_id':'9839-wolf_pack'," +
                                                          "'amount':20000," +
